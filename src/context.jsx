@@ -6,11 +6,17 @@ import reducer from "./reducer";
 // create context
 const AppContext = React.createContext();
 
+
+// call api
+
+const API = "https://thapareactapi.up.railway.app";
+
 // provider
 
 const initialState = {
     name: "",
     image: "",
+    services: [],
   };
 
 const AppProvider = ({children}) =>{
@@ -37,6 +43,24 @@ const AppProvider = ({children}) =>{
           },
         });
     };
+
+
+    const getServices = async(url) =>{
+      try{
+        const res = await fetch(url);
+        const data = await res.json();
+        dispatch({type: "GET_SERVICES", payload: data})
+
+      }catch(error){
+        console.log(error)
+      }
+    }
+
+
+    // to call the api
+    useEffect(()=> {
+      getServices(API)
+    },[])
 
 
     return(
